@@ -17,7 +17,7 @@ ggplot(data0,aes(year,y))+
   geom_line()+
   ylab("Cumulative number of disasters")+
   xlab("Year")+
-  theme_bw()+
+  theme_bw(base_size = 16)+
   xlim(c(1850,1962))
 
 ggsave("zero_cp_line.png", height = 6, width = 8)
@@ -143,7 +143,7 @@ ggplot(data1)+
   scale_color_manual("",breaks=c("95% Prediction Interval","Observations","Prediction Median"),values = c("green","black","red"))+
   xlab("Years")+
   ylab("Cummulative number of disasters")+
-  theme_bw()+
+  theme_bw(base_size = 16)+
   theme(legend.position = "top")
   
 ggsave("one_cp_predictions.png", height = 6, width = 8)
@@ -208,6 +208,12 @@ for (sample in 1:10000) {
 postSam <- matrix(c(sampleT1,sampleT2,sampleL1,sampleL2,sampleL3),nrow = 10000,ncol = 5)
 
 # Visualise
+d <- density(postSam[,3], from = 0, to = 5, n = 1000)
+plot(d$x,d$y,type = 'l',xlab = "Lambda 1",ylab = "")
+d <- density(postSam[,4], from = 0, to = 5, n = 1000)
+plot(d$x,d$y,type = 'l',xlab = "Lambda 1",ylab = "")
+d <- density(postSam[,5], from = 0, to = 5, n = 1000)
+plot(d$x,d$y,type = 'l',xlab = "Lambda 1",ylab = "")
 hist(postSam[,1], freq = FALSE, breaks = 112, xlim = c(0,112), main = NULL)
 hist(postSam[,2], freq = FALSE, breaks = 112, xlim = c(0,112), main = NULL)
 
@@ -257,7 +263,7 @@ ggplot(data2)+
   scale_color_manual("",breaks=c("95% Prediction Interval","Observations","Prediction Median"),values = c("green","black","red"))+
   xlab("Years")+
   ylab("Cummulative number of disasters")+
-  theme_bw()+
+  theme_bw(base_size = 16)+
   theme(legend.position = "top")
 
 ggsave("two_cp_predictions.png", height = 6, width = 8)
@@ -385,7 +391,7 @@ ggplot(data3)+
   scale_color_manual("",breaks=c("95% Prediction Interval","Observations","Prediction Median"),values = c("green","black","red"))+
   xlab("Years")+
   ylab("Cummulative number of disasters")+
-  theme_bw()+
+  theme_bw(base_size = 16)+
   theme(legend.position = "top")
 
 ggsave("three_cp_predictions.png", height = 6, width = 8)
@@ -610,4 +616,4 @@ for (i in 1:nrow(Tgrid)) {
 marginal4 <- sum(exp(pT))
 
 ## Visualise
-barplot(c(marginal1,marginal2,marginal3,marginal4), names.arg = c("1","2","3","4"), xlab = "Number of changepoints considered", ylab = "Marginal likelihood for a model")
+barplot(c(marginal1,marginal2,marginal3), names.arg = c("1","2","3"), xlab = "Number of changepoints considered", ylab = "Marginal likelihood for a model", cex.names = 1.5, cex.lab = 1.5, cex.axis = 1.2)
