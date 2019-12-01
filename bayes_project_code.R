@@ -28,7 +28,7 @@ ggsave("zero_cp_line.png", height = 6, width = 8)
 
 T <- seq(2,112)
 
-# Posterior Distribution - derived analytically
+# Marginal Posterior T Distribution
 pT <- rep(0,112)
 pT[1] <- log(0)
 for (t in T) {
@@ -151,12 +151,12 @@ ggsave("one_cp_predictions.png", height = 6, width = 8)
 # Two Changepoints --------------------------------------------------------
 
 # Possible values for T1 and T2
-T <- seq(2,111)
+T <- seq(2,112)
 Tgrid <- expand.grid(T,T) 
 names(Tgrid) <- c("t1","t2")
 Tgrid <- Tgrid[Tgrid$t1 < Tgrid$t2,]
 
-# Posterior Distribution - Task 1
+# Marginal Posterior T Distribution
 pT <- rep(0,nrow(Tgrid)+1)
 pT[1] <- log(0)
 for (i in 1:nrow(Tgrid)) {
@@ -207,15 +207,23 @@ for (sample in 1:10000) {
 # Concat the samples
 postSam <- matrix(c(sampleT1,sampleT2,sampleL1,sampleL2,sampleL3),nrow = 10000,ncol = 5)
 
-# Visualise
+# Visualise distributions
+layout(matrix(c(1,2,3,4,5,6),nrow=2,byrow=T))
+par(mar=c(3,3,1,1))
+
 d <- density(postSam[,3], from = 0, to = 5, n = 1000)
 plot(d$x,d$y,type = 'l',xlab = "Lambda 1",ylab = "")
+title(xlab="Lambda 1", line=2, cex.lab=1.2)
 d <- density(postSam[,4], from = 0, to = 5, n = 1000)
 plot(d$x,d$y,type = 'l',xlab = "Lambda 1",ylab = "")
+title(xlab="Lambda 2", line=2, cex.lab=1.2)
 d <- density(postSam[,5], from = 0, to = 5, n = 1000)
 plot(d$x,d$y,type = 'l',xlab = "Lambda 1",ylab = "")
+title(xlab="Lambda 3", line=2, cex.lab=1.2)
 hist(postSam[,1], freq = FALSE, breaks = 112, xlim = c(0,112), main = NULL)
+title(xlab="T1", line=2, cex.lab=1.2)
 hist(postSam[,2], freq = FALSE, breaks = 112, xlim = c(0,112), main = NULL)
+title(xlab="T2", line=2, cex.lab=1.2)
 
 # Draw predictions from the sample
 pred <- matrix(0,nrow = 10000, ncol = 112)
@@ -271,12 +279,12 @@ ggsave("two_cp_predictions.png", height = 6, width = 8)
 # 3 Changepoints ----------------------------------------------------------
 
 # All possible values for T1, T2 and T3
-T <- seq(2,111)
+T <- seq(2,112)
 Tgrid <- expand.grid(T,T,T) 
 names(Tgrid) <- c("t1","t2","t3")
 Tgrid <- Tgrid[Tgrid$t1 < Tgrid$t2 & Tgrid$t2 < Tgrid$t3-2,]
 
-# Posterior Distribution - Task 1
+# Marginal Posterior T Distribution
 pT <- rep(0,nrow(Tgrid)+1)
 pT[1] <- log(0)
 for (i in 1:nrow(Tgrid)) {
@@ -336,10 +344,28 @@ for (sample in 1:10000) {
 # Concat all distributions
 postSam <- matrix(c(sampleT1,sampleT2,sampleT3,sampleL1,sampleL2,sampleL3,sampleL4),nrow = 10000,ncol = 7)
 
-# Visualise
+# Visualise distributions
+layout(matrix(c(1,2,3,4,5,6,7,8),nrow=2,byrow=T))
+par(mar=c(3,3,1,1))
+
+d <- density(postSam[,4], from = 0, to = 5, n = 1000)
+plot(d$x,d$y,type = 'l',xlab = "Lambda 1",ylab = "")
+title(xlab="Lambda 1", line=2, cex.lab=1.2)
+d <- density(postSam[,5], from = 0, to = 5, n = 1000)
+plot(d$x,d$y,type = 'l',xlab = "Lambda 1",ylab = "")
+title(xlab="Lambda 2", line=2, cex.lab=1.2)
+d <- density(postSam[,6], from = 0, to = 5, n = 1000)
+plot(d$x,d$y,type = 'l',xlab = "Lambda 1",ylab = "")
+title(xlab="Lambda 3", line=2, cex.lab=1.2)
+d <- density(postSam[,7], from = 0, to = 5, n = 1000)
+plot(d$x,d$y,type = 'l',xlab = "Lambda 1",ylab = "")
+title(xlab="Lambda 4", line=2, cex.lab=1.2)
 hist(postSam[,1], freq = FALSE, breaks = 112, xlim = c(0,112), main = NULL)
+title(xlab="T1", line=2, cex.lab=1.2)
 hist(postSam[,2], freq = FALSE, breaks = 112, xlim = c(0,112), main = NULL)
+title(xlab="T2", line=2, cex.lab=1.2)
 hist(postSam[,3], freq = FALSE, breaks = 112, xlim = c(0,112), main = NULL)
+title(xlab="T3", line=2, cex.lab=1.2)
 
 # Make predictions from drawn posterior samples
 pred <- matrix(0,nrow = 10000, ncol = 112)
@@ -396,15 +422,15 @@ ggplot(data3)+
 
 ggsave("three_cp_predictions.png", height = 6, width = 8)
 
-# 4 Changepoints ----------------------------------------------------------
+# 4 Changepoints - Test ----------------------------------------------------------
 
-# All possible values for T1, T2 and T3
+# All possible values for T1, T2, T3 and T4
 T <- seq(2,111)
 Tgrid <- expand.grid(T,T,T,T) 
 names(Tgrid) <- c("t1","t2","t3","t4")
 Tgrid <- Tgrid[Tgrid$t1 < Tgrid$t2 & Tgrid$t2 < Tgrid$t3-2 & Tgrid$t3+2 < Tgrid$t4,]
 
-# Posterior Distribution - Task 1
+# Marginal Posterior T Distribution
 pT <- rep(0,nrow(Tgrid)+1)
 pT[1] <- log(0)
 for (i in 1:nrow(Tgrid)) {
@@ -420,7 +446,7 @@ pT <- exp(pT)
 pT <- pT/sum(pT) # Standardise probabilities
 sum(pT)
 
-# MAP - 3 Changepoints
+# MAP - 4 Changepoints
 map_idx <- which(pT==max(pT))
 map4 <- Tgrid[map_idx,]+1850
 
@@ -591,29 +617,6 @@ for (i in 1:nrow(Tgrid)) {
   idx <- idx+1
 }
 marginal3 <- sum(exp(pT))
-
-## 4 Changepoints
-
-T <- seq(2,111)
-Tgrid <- expand.grid(T,T,T,T) 
-names(Tgrid) <- c("t1","t2","t3","t4")
-Tgrid <- Tgrid[Tgrid$t1 < Tgrid$t2 & Tgrid$t2 < Tgrid$t3 & Tgrid$t3 < Tgrid$t4,]
-
-# Posterior Distribution
-pT <- nrow(Tgrid)
-idx <- 1
-for (i in 1:nrow(Tgrid)) {
-  pT[idx] <-  log(1/choose(111,4))+
-              log(114-Tgrid[i,4])*(-2-sum(y[Tgrid[i,4]:112]))+ lgamma(sum(y[Tgrid[i,4]:112])+2)+
-              log(Tgrid[i,4]-Tgrid[i,3])*(-2-sum(y[Tgrid[i,3]:(Tgrid[i,4]-1)]))+ lgamma(sum(y[Tgrid[i,3]:(Tgrid[i,4]-1)])+2)+
-              log(Tgrid[i,3]-Tgrid[i,2])*(-2-sum(y[Tgrid[i,2]:(Tgrid[i,3]-1)]))+ lgamma(sum(y[Tgrid[i,2]:(Tgrid[i,3]-1)])+2)+
-              log(Tgrid[i,2]-Tgrid[i,1])*(-2-sum(y[Tgrid[i,1]:(Tgrid[i,2]-1)]))+ lgamma(sum(y[Tgrid[i,1]:(Tgrid[i,2]-1)])+2)+
-              log(Tgrid[i,1])*(-2-sum(y[1:(Tgrid[i,1]-1)])) + lgamma(sum(y[1:(Tgrid[i,1]-1)])+2)-
-              sum(log(factorial(y))) 
-  
-  idx <- idx+1
-}
-marginal4 <- sum(exp(pT))
 
 ## Visualise
 barplot(c(marginal1,marginal2,marginal3), names.arg = c("1","2","3"), xlab = "Number of changepoints considered", ylab = "Marginal likelihood for a model", cex.names = 1.5, cex.lab = 1.5, cex.axis = 1.2)
